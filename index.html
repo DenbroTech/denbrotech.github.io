@@ -3,34 +3,141 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DenbroTech</title>
-  <meta name="description" content="DenbroTech makes small, fun apps: Flippy Mat, Malgenio and PubDex.">
-  <link rel="stylesheet" href="/style.css">
+  <title>Flippy Mat: Beer Mat Flip</title>
+  <meta name="description" content="Flippy Mat: the pub game where you flip a stack of beer mats off the edge of the table and catch them. Win 30 beer mats. By DenbroTech.">
+  <meta property="og:title" content="Flippy Mat: Beer Mat Flip">
+  <meta property="og:description" content="Flip a stack of beer mats off the table and catch them. Win 30 beer mats.">
+  <meta property="og:image" content="https://denbrotech.github.io/img/game.webp">
+  <link rel="icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/img/icon-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #1c120a; --bg2: #26190e; --wood: #3a2614; --ink: #f3e6c8; --muted: #c9b48f; --gold: #ffb84a; --gold2: #e08a1e; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: "VT323", ui-monospace, monospace; font-size: 22px; line-height: 1.35; }
+    a { color: var(--gold); }
+    .pixel { font-family: "Press Start 2P", ui-monospace, monospace; }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+
+    /* hero: the pub, darkened, with the mat flipping over it */
+    .hero { position: relative; min-height: 88vh; display: flex; align-items: center; overflow: hidden;
+      background: linear-gradient(180deg, rgba(28,18,10,.55) 0%, rgba(28,18,10,.7) 55%, var(--bg) 100%), url("img/pub.webp") center 30% / cover no-repeat; }
+    .hero .wrap { text-align: center; padding-top: 48px; padding-bottom: 48px; }
+    .flipper { width: min(250px, 58vw); aspect-ratio: 1; margin: 0 auto 28px; perspective: 900px; }
+    .flipper .mat { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; animation: flip 4.5s cubic-bezier(.5,0,.3,1) infinite; }
+    .flipper img { position: absolute; inset: 0; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 50%; filter: drop-shadow(0 18px 22px rgba(0,0,0,.6)); }
+    .flipper img.back { transform: rotateY(180deg); }
+    @keyframes flip {
+      0%, 30% { transform: translateY(0) rotateX(0deg); }
+      50% { transform: translateY(-34px) rotateX(-180deg); }
+      62%, 80% { transform: translateY(0) rotateX(-360deg); }
+      100% { transform: translateY(0) rotateX(-360deg); }
+    }
+    @media (prefers-reduced-motion: reduce) { .flipper .mat { animation: none; } }
+    h1 { font-size: clamp(22px, 5.4vw, 44px); margin: 0 0 14px; color: var(--ink); text-shadow: 0 4px 0 #000; letter-spacing: 1px; }
+    .tag { font-size: clamp(24px, 3.6vw, 32px); color: var(--muted); max-width: 620px; margin: 0 auto 28px; }
+    .buttons { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .btn { display: inline-block; padding: 14px 20px; font-family: "Press Start 2P", monospace; font-size: 12px; text-decoration: none; border: 3px solid #000; box-shadow: 4px 4px 0 #000; }
+    .btn.gold { background: var(--gold); color: #24170b; }
+    .btn.dark { background: var(--bg2); color: var(--ink); border-color: var(--gold2); }
+    .soon { margin-top: 18px; color: var(--muted); font-size: 20px; }
+
+    section { padding: 64px 0; }
+    h2 { font-size: clamp(16px, 3vw, 22px); color: var(--gold); margin: 0 0 24px; text-align: center; line-height: 1.5; }
+
+    /* how it plays: the game screen beside the steps */
+    .plays { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 40px; align-items: center; }
+    .phone { border: 10px solid #0d0804; border-radius: 34px; overflow: hidden; box-shadow: 0 0 0 3px var(--wood), 0 24px 50px rgba(0,0,0,.6); background: #000; }
+    .phone img { display: block; width: 100%; height: auto; }
+    .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+    .steps li { background: var(--bg2); border: 3px solid var(--wood); padding: 16px 18px; box-shadow: 4px 4px 0 #000; }
+    .steps b { display: block; font-family: "Press Start 2P", monospace; font-size: 12px; color: var(--gold); margin-bottom: 8px; }
+
+    /* the mats */
+    .rack { background: linear-gradient(180deg, var(--bg), #241609 50%, var(--bg)); }
+    .mats { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
+    .mats img { width: 100%; height: auto; border-radius: 50%; filter: drop-shadow(0 8px 10px rgba(0,0,0,.55)); transition: transform .25s; }
+    .mats img:hover { transform: rotate(-8deg) scale(1.08); }
+    .rack p { text-align: center; color: var(--muted); max-width: 640px; margin: 28px auto 0; }
+
+    footer { border-top: 3px solid var(--wood); padding: 28px 0 40px; text-align: center; color: var(--muted); font-size: 20px; }
+    footer a { margin: 0 8px; }
+
+    @media (max-width: 720px) {
+      .plays { grid-template-columns: 1fr; }
+      .phone { max-width: 260px; margin: 0 auto; }
+      .mats { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      section { padding: 48px 0; }
+    }
+  </style>
 </head>
 <body>
-<main>
-  <h1>DenbroTech</h1>
-  <p class="muted">Small, fun apps for your phone.</p>
 
-  <div class="apps">
-    <section class="app">
-      <h2>Flippy Mat: Beer Mat Flip</h2>
-      <p>Flip a stack of beer mats off the edge of the table and catch them. Win new mats as you go.</p>
-      <p><a href="https://play.google.com/store/apps/details?id=com.denbrotech.flippymat">Google Play</a> &middot; <a href="/flippy-mat/privacy.html">Privacy policy</a> &middot; <a href="https://www.instagram.com/flippymat">Instagram</a></p>
-    </section>
-    <section class="app">
-      <h2>Malgenio</h2>
-      <p>Track your moods, lifestyle and cycle, privately on your own phone.</p>
-      <p><a href="https://play.google.com/store/apps/details?id=com.denbrotech.malgenio">Google Play</a> &middot; <a href="/malgenio/privacy.html">Privacy policy</a></p>
-    </section>
-    <section class="app">
-      <h2>PubDex</h2>
-      <p>A retro pub-logging game: log the pubs you visit, rate them, collect beer mats and share with friends.</p>
-      <p><a href="https://play.google.com/store/apps/details?id=com.denbrotech.pubdex">Google Play</a> &middot; <a href="/pubdex/privacy.html">Privacy policy</a></p>
-    </section>
-  </div>
+  <header class="hero">
+    <div class="wrap">
+      <div class="flipper" aria-hidden="true"><div class="mat">
+        <img src="img/logo.webp" alt="">
+        <img class="back" src="img/logo_back.webp" alt="">
+      </div></div>
+      <h1 class="pixel">Flippy Mat</h1>
+      <p class="tag">The pub game you already know. Flip a stack of beer mats off the edge of the table and catch them. Then try two.</p>
+      <div class="buttons">
+        <a class="btn gold" href="#how">How it plays</a>
+        <a class="btn dark" href="https://www.instagram.com/flippymat">Instagram</a>
+      </div>
+      <p class="soon">Coming soon to Google Play</p>
+    </div>
+  </header>
 
-  <footer class="muted">Contact: <a href="mailto:denbrotech@proton.me">denbrotech@proton.me</a></footer>
-</main>
+  <main>
+    <section id="how">
+      <div class="wrap plays">
+        <div class="phone"><img src="img/game.webp" width="492" height="764" alt="Flippy Mat in play: a beer mat on the edge of a pub table, a hand ready to flip it, a fire and a sleeping dog in the pub behind."></div>
+        <div>
+          <h2 class="pixel" style="text-align:left">Bet you can't flip it</h2>
+          <ul class="steps">
+            <li><b>1. Slide</b>Push the mats to the edge of the table, just far enough to get your fingers under.</li>
+            <li><b>2. Flip</b>Flick them up off the edge and watch them spin.</li>
+            <li><b>3. Catch</b>Pinch them out of the air before they hit the floor. Too steep and they squirt out of your fingers.</li>
+            <li><b>4. Stack</b>Caught one? Now try two, then three... Beat your best and climb the leaderboard.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="rack">
+      <div class="wrap">
+        <h2 class="pixel">Win 30 beer mats</h2>
+        <div class="mats">
+          <img src="img/mats/mat32.webp" width="256" height="256" alt="The Red Lion" loading="lazy">
+          <img src="img/mats/binchicken.webp" width="256" height="256" alt="Bin Chicken Brew" loading="lazy">
+          <img src="img/mats/mat08.webp" width="256" height="256" alt="Cloud Chaser" loading="lazy">
+          <img src="img/mats/mat04.webp" width="256" height="256" alt="Dragon's Brew" loading="lazy">
+          <img src="img/mats/mat01.webp" width="256" height="256" alt="The Black Anchor" loading="lazy">
+          <img src="img/mats/mat20.webp" width="256" height="256" alt="Night Owl" loading="lazy">
+          <img src="img/mats/mat34.webp" width="256" height="256" alt="Beer Makes Me Sharky" loading="lazy">
+          <img src="img/mats/mat48.webp" width="256" height="256" alt="La Paisa" loading="lazy">
+          <img src="img/mats/mat49.webp" width="256" height="256" alt="Medellin" loading="lazy">
+          <img src="img/mats/mat43.webp" width="256" height="256" alt="Stout Stout" loading="lazy">
+          <img src="img/mats/mat27.webp" width="256" height="256" alt="Cerveza El Toro" loading="lazy">
+          <img src="img/mats/mat23.webp" width="256" height="256" alt="Gold" loading="lazy">
+        </div>
+        <p>Every stack you catch wins you a new mat to flip, from pub classics to fire-breathing dragons, plus shiny metal mats and secret bonus mats. Many of them come to life when you play.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <a href="/flippy-mat/privacy.html">Privacy policy</a> &middot;
+      <a href="mailto:denbrotech@proton.me">Contact</a> &middot;
+      <a href="https://www.instagram.com/flippymat">Instagram</a>
+      <p>&copy; 2026 DenbroTech</p>
+    </div>
+  </footer>
+
 </body>
 </html>
