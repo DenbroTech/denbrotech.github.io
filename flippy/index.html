@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get Flippy Mat</title>
+  <meta name="description" content="Flippy Mat: flip a stack of beer mats off the table and catch them. Get it on Google Play.">
+  <meta property="og:title" content="Flippy Mat: Beer Mat Flip">
+  <meta property="og:description" content="Flip a stack of beer mats off the table and catch them. Can you beat my score?">
+  <meta property="og:image" content="https://denbrotech.github.io/img/game.webp">
+  <link rel="icon" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #1c120a; --ink: #f3e6c8; --muted: #c9b48f; --gold: #ffb84a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--ink);
+      font-family: "VT323", ui-monospace, monospace; font-size: 22px;
+      background: linear-gradient(180deg, rgba(28,18,10,.6), rgba(28,18,10,.92)), url("/img/pub.webp") center 30% / cover no-repeat, var(--bg); }
+    main { padding: 32px 16px; max-width: 460px; }
+    img.mat { width: min(200px, 52vw); height: auto; filter: drop-shadow(0 14px 18px rgba(0,0,0,.6)); }
+    h1 { font-family: "Press Start 2P", monospace; font-size: clamp(20px, 6vw, 30px); margin: 22px 0 12px; text-shadow: 0 3px 0 #000; }
+    p { color: var(--muted); margin: 0 0 26px; }
+    a.play { display: block; padding: 18px 20px; background: var(--gold); color: #24170b; text-decoration: none;
+      font-family: "Press Start 2P", monospace; font-size: 13px; border: 3px solid #000; box-shadow: 4px 4px 0 #000; }
+    .more { margin-top: 22px; font-size: 20px; }
+    .more a { color: var(--gold); margin: 0 8px; }
+  </style>
+</head>
+<body>
+<main>
+  <img class="mat" src="/img/logo.webp" alt="Flippy Mat">
+  <h1>Flippy Mat</h1>
+  <p>Flick a stack of beer mats off the table and catch them. Your mate's set the score. Can you beat it?</p>
+  <a class="play" href="https://play.google.com/store/apps/details?id=com.denbrotech.flippymat">Get it on Google Play</a>
+  <div class="more"><a href="/">About the game</a> &middot; <a href="https://www.instagram.com/flippymat">Instagram</a></div>
+</main>
+</body>
+</html>
